@@ -16,25 +16,24 @@ Tested-with:         GHC == 6.10.3
 
 Library
   Build-Depends:   base >= 2.0 && < 5
--- , array, containers, haskeline, transformers, mtl, parsec, directory, ghc, ghc-paths
---  Extensions:      ExistentialQuantification CPP CPP
   Hs-Source-Dirs:  src
   Exposed-Modules: Bindings.SELinux.SIPC 
   Extra-Libraries: sipc
 
--- Extra-Source-Files:  README.markdown
---                      LICENSE
+Extra-Source-Files:  README.markdown
+                     LICENSE
+Source-Repository head
+     Type:            git
+     Location:        git://github.com/justinethier/hs-bindings-sipc.git
+ 
+Executable         MQCreator
+  Build-Depends:   bindings-sipc, base >= 2.0 && < 5
+--  , array, containers, haskeline, transformers, mtl, parsec, directory, ghc, ghc-paths
+  Main-is:         MQCreator.hs
+  Hs-Source-Dirs:  src/Examples
+
+-- 
 -- Data-Files:          stdlib.scm
--- 
--- Source-Repository head
---     Type:            git
---     Location:        git://github.com/justinethier/husk-scheme.git
--- 
--- Executable         huski
---   Build-Depends:   husk-scheme, base >= 2.0 && < 5, array, containers, haskeline, transformers, mtl, parsec, directory, ghc, ghc-paths
---   Extensions:      ExistentialQuantification CPP CPP
---   Main-is:         shell.hs
---   Hs-Source-Dirs:  hs-src/Interpreter
 -- 
 -- Executable huskc
 --   Build-Depends: husk-scheme, base >= 2.0 && < 5, array, containers, haskeline, transformers, mtl, parsec, directory, ghc, ghc-paths, process, filepath
