@@ -4,7 +4,7 @@ Synopsis:            Low level bindings to SIPC.
 Description:         Low level bindings to the Secure Inter-Process Communications (SIPC)
                      library for SELinux.
 License:             LGPL
--- License-file:        LICENSE
+License-file:        LICENSE
 Author:              Justin Ethier
 Maintainer:          Justin Ethier <github.com/justinethier>
 Homepage:            http://justinethier.github.com/hs-bindings-sipc
