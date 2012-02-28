@@ -11,18 +11,18 @@ import Foreign.C
 
 #c
 enum SIPCRole {
- Sipc_creator  = SIPC_CREATOR,
- Sipc_sender   = SIPC_SENDER,
- Sipc_receiver = SIPC_RECEIVER
+ SipcCreator  = SIPC_CREATOR,
+ SipcSender   = SIPC_SENDER,
+ SipcReceiver = SIPC_RECEIVER
 };
 enum SIPCType {
- Sipc_sysv_shm     = SIPC_SYSV_SHM,
- Sipc_sysv_mqueues = SIPC_SYSV_MQUEUES,
- Sipc_num_types    = SIPC_NUM_TYPES
+ SipcSysvShm     = SIPC_SYSV_SHM,
+ SipcSysvMqueues = SIPC_SYSV_MQUEUES,
+ SipcNumTypes    = SIPC_NUM_TYPES
 };
 enum SIPCIOCtl {
- Sipc_block   = SIPC_BLOCK,
- Sipc_noblock = SIPC_NOBLOCK
+ SipcBlock   = SIPC_BLOCK,
+ SipcNoblock = SIPC_NOBLOCK
 };
 #endc
 
@@ -40,7 +40,7 @@ enum SIPCIOCtl {
 type SipcPtr = Ptr ()
 
 -- TODO: should use CSize for last input arg
-{#fun unsafe sipc_open {`String', cFromEnum `SIPCRole', cFromEnum `SIPCType', `Int' } -> `SipcPtr' id #}
+{#fun unsafe sipc_open as ^ {`String', cFromEnum `SIPCRole', cFromEnum `SIPCType', `Int' } -> `SipcPtr' id #}
 {#fun unsafe sipc_close {id `SipcPtr'} -> `()' #}
 
 {#fun unsafe sipc_unlink {`String', cFromEnum `SIPCType'} -> `()' #}
