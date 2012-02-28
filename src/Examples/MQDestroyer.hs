@@ -10,4 +10,4 @@ import System.IO
 
 main :: IO ()
 main = do
-  sipcUnlink "sipc_mq_test"
+  sipcUnlink "sipc_mq_test" SipcSysvMqueues 

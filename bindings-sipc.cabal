@@ -37,9 +37,7 @@ Executable         MQCreator
   Main-is:         MQCreator.hs
   Hs-Source-Dirs:  src/Examples
 
--- Executable huskc
---   Build-Depends: husk-scheme, base >= 2.0 && < 5, array, containers, haskeline, transformers, mtl, parsec, directory, ghc, ghc-paths, process, filepath
---   Extensions: ExistentialQuantification CPP CPP
---   Main-is: huskc.hs
---   Hs-Source-Dirs: hs-src/Compiler
--- 
+Executable         MQDestroyer
+  Build-Depends:   bindings-sipc, base >= 2.0 && < 5
+  Main-is:         MQDestroyer.hs
+  Hs-Source-Dirs:  src/Examples

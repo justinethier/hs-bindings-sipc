@@ -10,7 +10,6 @@ import System.IO
 
 main :: IO ()
 main = do
- -- TODO: need to tweak naming conventions a bit
   sipc <- sipcOpen "sipc_mq_test" SipcCreator SipcSysvMqueues 0
   if sipc == nullPtr
      then do
