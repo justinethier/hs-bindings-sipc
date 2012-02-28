@@ -35,6 +35,14 @@ main = do
         hPutStrLn stderr "Error: Unable to create message queue"
         sipcClose(sipc)
      else do
+{- TODO: 
+	/* Get pointer to the handle's internal buffer */
+	data = sipc_get_data_ptr(ipc);
+	if (!data) {
+		sipc_error(ipc, "Unable to get data pointer\n");
+		goto out;
+	}
+-}
         sendFileData sipc
         sipcClose(sipc)
 
@@ -44,20 +52,16 @@ sendFileData sipc = do
   fData <- hGetContents f
   -- TODO: send data
   hClose f
+
+-- sendData sipc dataPtr = do
+--   result <- sipcSendData sipc
+
 -- TODO:
 {-
 	int retv = -1;
 	FILE *ifile = NULL;
 	size_t rbytes = 0;
 	char *data = NULL;
-
-	/* Open data file for reading */
-	ifile = fopen(IN_FILE, "r");
-	if (!ifile) {
-		sipc_error(ipc, "Unable to open data file\n");
-		goto out;
-	}
-	
 	/* Read READ_LEN bytes into the handle's internal buffer */
 	while ((rbytes = fread(data, sizeof(char), READ_LEN, ifile)) > 0) {
 		  /* Send this chunk of data */
