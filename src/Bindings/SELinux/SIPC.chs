@@ -41,20 +41,20 @@ type SipcPtr = Ptr ()
 
 -- TODO: should use CSize for last input arg
 {#fun unsafe sipc_open as ^ {`String', cFromEnum `SIPCRole', cFromEnum `SIPCType', `Int' } -> `SipcPtr' id #}
-{#fun unsafe sipc_close {id `SipcPtr'} -> `()' #}
+{#fun unsafe sipc_close as ^ {id `SipcPtr'} -> `()' #}
 
-{#fun unsafe sipc_unlink {`String', cFromEnum `SIPCType'} -> `()' #}
+{#fun unsafe sipc_unlink as ^ {`String', cFromEnum `SIPCType'} -> `()' #}
 
-{#fun unsafe sipc_ioctl {id `SipcPtr', cFromEnum `SIPCIOCtl'} -> `Int' #}
+{#fun unsafe sipc_ioctl as ^ {id `SipcPtr', cFromEnum `SIPCIOCtl'} -> `Int' #}
 
 -- TODO: same issue with CSize as above
 --int sipc_send_data(sipc_t *sipc, size_t msg_len);
-{#fun unsafe sipc_send_data {id `SipcPtr', `Int'} -> `Int' #}
+{#fun unsafe sipc_send_data as ^ {id `SipcPtr', `Int'} -> `Int' #}
 
 -- TODO: is String really the right return type here??
 -- /* Returns a pointer to the data contained within the IPC resource */
 --char *sipc_get_data_ptr(sipc_t *sipc);
-{#fun unsafe sipc_get_data_ptr {id `SipcPtr'} -> `String' #}
+{#fun unsafe sipc_get_data_ptr as ^ {id `SipcPtr'} -> `String' #}
 
 {- TODO:
 
@@ -68,7 +68,7 @@ void sipc_error(sipc_t *sipc, const char *fmt, ...)
 	__attribute__ ((format(printf, 2, 3)));
 -}
 
-{#fun unsafe sipc_shm_recv_done {id `SipcPtr'} -> `Int' #}
+{#fun unsafe sipc_shm_recv_done as ^ {id `SipcPtr'} -> `Int' #}
 
 -- |Convert a Haskell enumeration to C.
 -- 
