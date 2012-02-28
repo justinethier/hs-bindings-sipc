@@ -41,3 +41,8 @@ Executable         MQDestroyer
   Build-Depends:   bindings-sipc, base >= 2.0 && < 5
   Main-is:         MQDestroyer.hs
   Hs-Source-Dirs:  src/Examples
+
+Executable         MQSender
+  Build-Depends:   bindings-sipc, base >= 2.0 && < 5
+  Main-is:         MQSender.hs
+  Hs-Source-Dirs:  src/Examples
