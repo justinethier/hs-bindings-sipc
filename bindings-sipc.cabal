@@ -14,17 +14,22 @@ Build-Type:          Simple
 Category:            FFI 
 Tested-with:         GHC == 6.10.3
 
-Library
-  Build-Depends:   base >= 2.0 && < 5
-  Hs-Source-Dirs:  src
-  Exposed-Modules: Bindings.SELinux.SIPC 
-  Extra-Libraries: sipc
-
 Extra-Source-Files:  README.markdown
                      LICENSE
 Source-Repository head
      Type:            git
      Location:        git://github.com/justinethier/hs-bindings-sipc.git
+
+-- 
+-- Data-Files:          stdlib.scm
+-- 
+
+Library
+  Build-Depends:   base >= 2.0 && < 5
+--, c2hs
+  Hs-Source-Dirs:  src
+  Exposed-Modules: Bindings.SELinux.SIPC 
+  Extra-Libraries: sipc
  
 Executable         MQCreator
   Build-Depends:   bindings-sipc, base >= 2.0 && < 5
@@ -32,9 +37,6 @@ Executable         MQCreator
   Main-is:         MQCreator.hs
   Hs-Source-Dirs:  src/Examples
 
--- 
--- Data-Files:          stdlib.scm
--- 
 -- Executable huskc
 --   Build-Depends: husk-scheme, base >= 2.0 && < 5, array, containers, haskeline, transformers, mtl, parsec, directory, ghc, ghc-paths, process, filepath
 --   Extensions: ExistentialQuantification CPP CPP
