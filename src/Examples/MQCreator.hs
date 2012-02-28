@@ -10,7 +10,8 @@ import System.IO
 
 main :: IO ()
 main = do
-  sipc <- sipc_open "sipc_mq_test" Sipc_creator Sipc_sysv_mqueues 0
+ -- TODO: need to tweak naming conventions a bit
+  sipc <- sipcOpen "sipc_mq_test" SipcCreator SipcSysvMqueues 0
   if sipc == nullPtr
      then do
         hPutStrLn stderr "Error: Unable to create message queue"
