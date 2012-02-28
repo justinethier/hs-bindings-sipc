@@ -4,7 +4,7 @@ configure:
 	cabal configure --prefix=$(HOME) --user
 build:
 	cabal build
-dist:
+install:
 	cabal install && cabal sdist
 clean:
 	rm -rf *.o *.hi *.chi Sipc.chs.h C2HS.hs Sipc.hs a.out dist

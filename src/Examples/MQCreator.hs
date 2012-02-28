@@ -5,14 +5,14 @@
 module Main where
 
 import Bindings.SELinux.SIPC
+import Foreign.Ptr
+import System.IO
 
 main :: IO ()
 main = do
   sipc <- sipc_open "sipc_mq_test" Sipc_creator Sipc_sysv_mqueues 0
-  -- TODO: need to test below to make sure syntax is OK 
-  case sipc of
-    nullPtr ->
-        putStrLn "Error: Unable to create message queue" -- TODO: send to stderr
-    _ -> do
+  if sipc == nullPtr
+     then do
+        hPutStrLn stderr "Error: Unable to create message queue"
+     else do
         sipc_close(sipc)
-        putStrLn ""
