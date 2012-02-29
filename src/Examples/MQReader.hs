@@ -5,33 +5,40 @@
 module Main where
 
 import Bindings.SELinux.SIPC
-import Foreign.Ptr
+import Foreign
+import Foreign.C
+--import Foreign.Ptr
 import System.IO
 
 -- Key which sender and receiver have agreed upon 
-SIPC_KEY = "sipc_mq_test"
+sipcKey = "sipc_mq_test"
 
 -- Amount of data to allocate inside the IPC handle
-DATA_LEN = 8192
+dataLen = 8192
 
 -- End of message marker which sender and receiver have agreed upon
-DATA_END = "0xDEADBEEF"  
+dataEnd = "0xDEADBEEF"  
 
 main :: IO ()
 main = do
-  sipc <- sipcOpen "sipc_mq_test" SipcCreator SipcSysvMqueues DATA_LEN
+  sipc <- sipcOpen "sipc_mq_test" SipcCreator SipcSysvMqueues dataLen
   if sipc == nullPtr
      then do
         hPutStrLn stderr "Error: Unable to create message queue"
- 	recv
      else do
-        sipcClose(sipc)
+-- 	    _ <- recv sipc
+        sipcClose sipc
 
 -- TODO:
 
-recv :: IO()
-recv = do
+recv :: SipcPtr -> IO()
+recv sipc = do
+    (result, dataP, len) <- sipcRecvData sipc
+--    dataStr <- map castCCharToChar dataP
+--    putStrLn $ "Received: " ++ dataStr
+    free dataP
 
+{-
 	/* Receive data from shared memory until the end of transmission
 	 * marker has been received. */
 	while (!sipc_recv_data(ipc, &data, &msglen)) {
@@ -55,4 +62,4 @@ static int END_XMIT(char *data)
 
 	return !strcmp(data, DATA_END);
 }
-
+-}

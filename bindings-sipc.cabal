@@ -30,6 +30,11 @@ Library
   Hs-Source-Dirs:  src
   Exposed-Modules: Bindings.SELinux.SIPC 
   Extra-Libraries: sipc
+
+Executable         MQReader
+  Build-Depends:   bindings-sipc, base >= 2.0 && < 5
+  Main-is:         MQReader.hs
+  Hs-Source-Dirs:  src/Examples
  
 Executable         MQCreator
   Build-Depends:   bindings-sipc, base >= 2.0 && < 5
@@ -45,9 +50,4 @@ Executable         MQDestroyer
 Executable         MQSender
   Build-Depends:   bindings-sipc, base >= 2.0 && < 5
   Main-is:         MQSender.hs
-  Hs-Source-Dirs:  src/Examples
-
-Executable         MQReader
-  Build-Depends:   bindings-sipc, base >= 2.0 && < 5
-  Main-is:         MQReader.hs
   Hs-Source-Dirs:  src/Examples

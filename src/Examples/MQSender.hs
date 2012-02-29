@@ -38,18 +38,18 @@ main = do
   if sipc == nullPtr
      then do
         hPutStrLn stderr "Error: Unable to create message queue"
-        sipcClose(sipc)
+        sipcClose sipc
      else do
         dataP <- sipcGetDataPtr sipc
         if dataP == nullPtr
            then do
               hPutStrLn stderr "Error: Unable to get data pointer"
-              sipcClose(sipc)
+              sipcClose sipc
            else do 
               --sendMessage sipc dataP "TEST STRING. Testing 1, 2, 3..." 
               sendFileData sipc dataP
               sendEndXmit sipc dataP
-              sipcClose(sipc)
+              sipcClose sipc
 
 -- |Send data to the message queue
 sendMessage :: SipcPtr -> Ptr CChar -> String -> IO ()

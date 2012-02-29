@@ -15,4 +15,4 @@ main = do
      then do
         hPutStrLn stderr "Error: Unable to create message queue"
      else do
-        sipcClose(sipc)
+        sipcClose sipc
