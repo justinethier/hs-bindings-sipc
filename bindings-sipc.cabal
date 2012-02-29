@@ -9,7 +9,7 @@ Author:              Justin Ethier
 Maintainer:          Justin Ethier <github.com/justinethier>
 Homepage:            http://justinethier.github.com/hs-bindings-sipc
 Cabal-Version:       >= 1.8
-Build-Tools:         c2hs
+--Build-Tools:         c2hs
 Build-Type:          Simple
 Category:            FFI 
 Tested-with:         GHC == 7.0.4
