@@ -81,12 +81,20 @@ sendFileData sipc dataP = do
   sendFileChunks sipc dataP fData
   hClose f
 
+-- Poor man's bzero
+clearBuffer dataP = do
+    let buffer = take ipcLen $ repeat '\0'
+    tmpP <- newArray $ map castCharToCChar buffer
+    _ <- copyBytes dataP tmpP $ length buffer
+    free tmpP
+
 sendFileChunks sipc dataP dataList = do
   let (c, cs) = splitAt readLen dataList
+  clearBuffer dataP
   sendMessage sipc dataP c
   when (not $ null cs) $ sendFileChunks sipc dataP cs
 
--- TODO:
+-- Obsolete:
 {-
 	int retv = -1;
 	FILE *ifile = NULL;
