@@ -51,22 +51,19 @@ type SipcPtr = Ptr ()
 --int sipc_send_data(sipc_t *sipc, size_t msg_len);
 {#fun unsafe sipc_send_data as ^ {id `SipcPtr', `Int'} -> `Int' #}
 
--- TODO: is String really the right return type here??
 -- /* Returns a pointer to the data contained within the IPC resource */
 --char *sipc_get_data_ptr(sipc_t *sipc);
 {#fun unsafe sipc_get_data_ptr as ^ {id `SipcPtr'} -> `Ptr CChar' id #}
 
-{- TODO:
 
+-- TODO:
 -- data is allocated by C, believe this must be indicated to Haskell
 -- TBD: what about len??
-int sipc_recv_data(sipc_t *sipc, char **data, size_t *len);
-
--- TODO: are variable-length args even supported by the Haskell FFI???
-/* Prints an error message, accepts printf format string */
-void sipc_error(sipc_t *sipc, const char *fmt, ...)
-	__attribute__ ((format(printf, 2, 3)));
--}
+--
+-- /* Call to receive data.  Data will be allocated and filled and len
+-- * will be set to the length.  Returns 0 on success, <0 on failure. */
+--int sipc_recv_data(sipc_t *sipc, char **data, size_t *len);
+{#fun unsafe sipc_recv_data as ^ {id `SipcPtr', alloca- `Ptr CChar' peek*, alloca- `CUInt' peek*} -> `Int' #}
 
 {#fun unsafe sipc_shm_recv_done as ^ {id `SipcPtr'} -> `Int' #}
 
