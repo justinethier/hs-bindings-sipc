@@ -6,6 +6,7 @@ module Main where
 
 import Bindings.SELinux.SIPC
 import Foreign.Ptr
+import Foreign.Storable
 import System.IO
 
 -- Key which sender and receiver have agreed upon 
@@ -42,6 +43,13 @@ main = do
               sipcClose(sipc)
            else do 
               --sendFileData sipc
+-- TODO: see Foreign.C.String
+              poke dataP ("TEST! " ++ dataEnd)
+
+              -- TODO: do this as a loop, and check return value
+              numSent <- sipcSendData sipc ipcLen
+              --
+
               sipcClose(sipc)
 
 sendFileData :: SipcPtr -> IO ()
