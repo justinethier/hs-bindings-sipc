@@ -5,6 +5,9 @@
 module Main where
 
 import Bindings.SELinux.SIPC
+import Foreign
+import Foreign.C
+--import Foreign.Marshall.Utils
 import Foreign.Ptr
 import Foreign.Storable
 import System.IO
@@ -44,10 +47,17 @@ main = do
            else do 
               --sendFileData sipc
 -- TODO: see Foreign.C.String
-              poke dataP ("TEST! " ++ dataEnd)
+              --poke dataP ("TEST! " ++ dataEnd)
+              let tmpStr = dataEnd
 
+              tmpP <- newArray $ map castCharToCChar tmpStr
+-- TODO: allocate new array for string? then could use Foreign.Marshall.Utils.copyBytes to copy data into the dataP
+              _ <- copyBytes dataP tmpP $ length tmpStr
+              free tmpP
               -- TODO: do this as a loop, and check return value
+              putStrLn $ "Sending: " ++ tmpStr
               numSent <- sipcSendData sipc ipcLen
+              putStrLn $ "Bytes sent: " ++ show numSent
               --
 
               sipcClose(sipc)
