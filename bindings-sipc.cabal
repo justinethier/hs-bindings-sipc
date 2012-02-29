@@ -12,17 +12,13 @@ Cabal-Version:       >= 1.8
 Build-Tools:         c2hs
 Build-Type:          Simple
 Category:            FFI 
-Tested-with:         GHC == 6.10.3
+Tested-with:         GHC == 7.0.4
 
 Extra-Source-Files:  README.markdown
                      LICENSE
 Source-Repository head
      Type:            git
      Location:        git://github.com/justinethier/hs-bindings-sipc.git
-
--- 
--- Data-Files:          stdlib.scm
--- 
 
 Library
   Build-Depends:   base >= 2.0 && < 5
@@ -31,9 +27,10 @@ Library
   Exposed-Modules: Bindings.SELinux.SIPC 
   Extra-Libraries: sipc
 
+-- Example/Test programs
+
 Executable         MQCreator
   Build-Depends:   bindings-sipc, base >= 2.0 && < 5
---  , array, containers, haskeline, transformers, mtl, parsec, directory, ghc, ghc-paths
   Main-is:         MQCreator.hs
   Hs-Source-Dirs:  src/Examples
 
