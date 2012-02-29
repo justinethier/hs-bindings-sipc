@@ -46,3 +46,8 @@ Executable         MQSender
   Build-Depends:   bindings-sipc, base >= 2.0 && < 5
   Main-is:         MQSender.hs
   Hs-Source-Dirs:  src/Examples
+
+Executable         MQReader
+  Build-Depends:   bindings-sipc, base >= 2.0 && < 5
+  Main-is:         MQReader.hs
+  Hs-Source-Dirs:  src/Examples
