@@ -45,22 +45,31 @@ main = do
               hPutStrLn stderr "Error: Unable to get data pointer"
               sipcClose(sipc)
            else do 
-              --sendFileData sipc
--- TODO: see Foreign.C.String
-              --poke dataP ("TEST! " ++ dataEnd)
-              let tmpStr = dataEnd
-
-              tmpP <- newArray $ map castCharToCChar tmpStr
--- TODO: allocate new array for string? then could use Foreign.Marshall.Utils.copyBytes to copy data into the dataP
-              _ <- copyBytes dataP tmpP $ length tmpStr
-              free tmpP
-              -- TODO: do this as a loop, and check return value
-              putStrLn $ "Sending: " ++ tmpStr
-              numSent <- sipcSendData sipc ipcLen
-              putStrLn $ "Bytes sent: " ++ show numSent
-              --
-
+              sendMessage sipc dataP "TEST STRING. Testing 1, 2, 3..." 
+              sendEndXmit sipc dataP
               sipcClose(sipc)
+
+-- |Send data to the message queue
+sendMessage :: SipcPtr -> Ptr CChar -> String -> IO ()
+sendMessage sipc dataP msg = do
+    tmpP <- newArray $ map castCharToCChar msg
+    _ <- copyBytes dataP tmpP $ length msg
+    free tmpP
+    -- TODO: do this as a loop, and check return value
+    putStrLn $ "Sending: " ++ msg
+    numSent <- sipcSendData sipc ipcLen
+    putStrLn $ "Bytes sent: " ++ show numSent
+
+-- |Send end of transmission marker
+sendEndXmit sipc dataP = do
+    tmpP <- newCAString dataEnd
+    _ <- copyBytes dataP tmpP $ 1 + length dataEnd
+    free tmpP
+    -- TODO: do this as a loop, and check return value
+    putStrLn $ "Sending: " ++ dataEnd
+    numSent <- sipcSendData sipc ipcLen
+    putStrLn $ "Bytes sent: " ++ show numSent
+
 
 sendFileData :: SipcPtr -> IO ()
 sendFileData sipc = do
@@ -68,9 +77,6 @@ sendFileData sipc = do
   fData <- hGetContents f
   -- TODO: send data
   hClose f
-
--- sendData sipc dataPtr = do
---   result <- sipcSendData sipc
 
 -- TODO:
 {-
