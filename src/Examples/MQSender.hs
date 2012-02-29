@@ -5,6 +5,7 @@
 module Main where
 
 import Bindings.SELinux.SIPC
+import Control.Monad (when)
 import Foreign
 import Foreign.C
 --import Foreign.Marshall.Utils
@@ -45,7 +46,8 @@ main = do
               hPutStrLn stderr "Error: Unable to get data pointer"
               sipcClose(sipc)
            else do 
-              sendMessage sipc dataP "TEST STRING. Testing 1, 2, 3..." 
+              --sendMessage sipc dataP "TEST STRING. Testing 1, 2, 3..." 
+              sendFileData sipc dataP
               sendEndXmit sipc dataP
               sipcClose(sipc)
 
@@ -55,10 +57,10 @@ sendMessage sipc dataP msg = do
     tmpP <- newArray $ map castCharToCChar msg
     _ <- copyBytes dataP tmpP $ length msg
     free tmpP
-    -- TODO: do this as a loop, and check return value
     putStrLn $ "Sending: " ++ msg
-    numSent <- sipcSendData sipc ipcLen
-    putStrLn $ "Bytes sent: " ++ show numSent
+    result <- sipcSendData sipc ipcLen
+    putStrLn $ "Result: " ++ show result
+    -- TODO: error if result < 0
 
 -- |Send end of transmission marker
 sendEndXmit sipc dataP = do
@@ -67,16 +69,22 @@ sendEndXmit sipc dataP = do
     free tmpP
     -- TODO: do this as a loop, and check return value
     putStrLn $ "Sending: " ++ dataEnd
-    numSent <- sipcSendData sipc ipcLen
-    putStrLn $ "Bytes sent: " ++ show numSent
+    result <- sipcSendData sipc ipcLen
+    putStrLn $ "Result: " ++ show result
+    -- TODO: error if result < 0
 
 
-sendFileData :: SipcPtr -> IO ()
-sendFileData sipc = do
+sendFileData :: SipcPtr -> Ptr CChar -> IO ()
+sendFileData sipc dataP = do
   f <- openFile inFile ReadMode
   fData <- hGetContents f
-  -- TODO: send data
+  sendFileChunks sipc dataP fData
   hClose f
+
+sendFileChunks sipc dataP dataList = do
+  let (c, cs) = splitAt readLen dataList
+  sendMessage sipc dataP c
+  when (not $ null cs) $ sendFileChunks sipc dataP cs
 
 -- TODO:
 {-
