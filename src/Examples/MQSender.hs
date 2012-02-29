@@ -35,16 +35,14 @@ main = do
         hPutStrLn stderr "Error: Unable to create message queue"
         sipcClose(sipc)
      else do
-{- TODO: 
-	/* Get pointer to the handle's internal buffer */
-	data = sipc_get_data_ptr(ipc);
-	if (!data) {
-		sipc_error(ipc, "Unable to get data pointer\n");
-		goto out;
-	}
--}
-        sendFileData sipc
-        sipcClose(sipc)
+        dataP <- sipcGetDataPtr sipc
+        if dataP == nullPtr
+           then do
+              hPutStrLn stderr "Error: Unable to get data pointer"
+              sipcClose(sipc)
+           else do 
+              --sendFileData sipc
+              sipcClose(sipc)
 
 sendFileData :: SipcPtr -> IO ()
 sendFileData sipc = do

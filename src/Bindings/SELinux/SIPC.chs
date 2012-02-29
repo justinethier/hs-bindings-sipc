@@ -54,7 +54,7 @@ type SipcPtr = Ptr ()
 -- TODO: is String really the right return type here??
 -- /* Returns a pointer to the data contained within the IPC resource */
 --char *sipc_get_data_ptr(sipc_t *sipc);
-{#fun unsafe sipc_get_data_ptr as ^ {id `SipcPtr'} -> `String' #}
+{#fun unsafe sipc_get_data_ptr as ^ {id `SipcPtr'} -> `Ptr CChar' id #}
 
 {- TODO:
 
