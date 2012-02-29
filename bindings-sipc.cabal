@@ -32,7 +32,7 @@ Library
   Extra-Libraries: sipc
 
 Executable         MQReader
-  Build-Depends:   bindings-sipc, base >= 2.0 && < 5
+  Build-Depends:   bindings-sipc, base >= 2.0 && < 5, mtl
   Main-is:         MQReader.hs
   Hs-Source-Dirs:  src/Examples
  

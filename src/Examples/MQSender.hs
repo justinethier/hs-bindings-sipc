@@ -1,4 +1,4 @@
--- A program to test creating a message queue.
+-- A program to test sending messages to a message queue.
 -- 
 -- Based on sipc code from: examples/mq_sender.c
 --
@@ -8,7 +8,6 @@ import Bindings.SELinux.SIPC
 import Control.Monad (when)
 import Foreign
 import Foreign.C
---import Foreign.Marshall.Utils
 import Foreign.Ptr
 import Foreign.Storable
 import System.IO

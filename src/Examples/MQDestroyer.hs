@@ -1,4 +1,4 @@
--- A program to test remove a message queue.
+-- A program to test destroying a message queue.
 -- 
 -- Based on sipc code from: examples/mq_destroyer.c
 --
