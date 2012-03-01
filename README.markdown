@@ -13,4 +13,4 @@ Once the library is available, Haskell bindings can be installed using `cabal`:
 Testing
 -------
 
-Example programs are provided to test message queues. Before using them you need to copy `data.txt` from the SIPC examples directory, and you need to create a file `sipc_mq_test`. The programs can then be executed in order: `MQCreator` ==> `MQSender` -> `MQReader`, `MQDestroyer`.
+Example programs are provided to test message queues. Before using them you need to copy `data.txt` from the SIPC examples directory, and you need to create a file `sipc_mq_test`. The programs can then be executed in order: `MQCreator`, `MQSender`, `MQReader`, and finally `MQDestroyer`.
