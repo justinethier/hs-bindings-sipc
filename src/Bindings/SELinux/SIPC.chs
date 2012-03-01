@@ -102,12 +102,26 @@ type SipcPtr = Ptr ()
 -- |Returns a pointer to the data contained within the IPC resource
 {#fun unsafe sipc_get_data_ptr as ^ {id `SipcPtr'} -> `Ptr CChar' id #}
 
--- TODO: a CUInt below means that this only compiles on 32-bit systems, 
---       since CSize maps to CULong on 64-bit systems.
-
 -- |Call to receive data.  Data will be allocated and filled and len
 --  will be set to the length.  Returns 0 on success, <0 on failure.
-{#fun unsafe sipc_recv_data as ^ {id `SipcPtr', alloca- `Ptr CChar' peek*, alloca- `CUInt' peek*} -> `Int' #}
+sipcRecvData :: SipcPtr -> IO (Int, Ptr CChar, CSize)
+sipcRecvData a1 =
+  let {a1' = id a1} in
+  alloca $ \a2' ->
+  alloca $ \a3' ->
+  sipcRecvData'_ a1' a2' a3' >>= \res ->
+  peek  a2'>>= \a2'' ->
+  peek  a3'>>= \a3'' ->
+  let {res' = fromIntegral res} in
+  return (res', a2'', fromIntegral a3'')
+foreign import ccall unsafe "Bindings/SELinux/SIPC.chs.h sipc_recv_data"
+  sipcRecvData'_ :: ((Ptr ()) -> ((Ptr (Ptr CChar)) -> ((Ptr CUInt) -> (IO CInt))))
+
+-- FUTURE: It would be nice to use the following directive to generate 
+--         sipcRecvData, but CSize maps to either CUInt (32-bit) or
+--         CULong (64-bit) and I can only get this #fun to work by 
+--         hardcoding one of those types instead of CSize: 
+--{#fun unsafe sipc_recv_data as ^ {id `SipcPtr', alloca- `Ptr CChar' peek*, alloca- `CSize' peek*} -> `Int' #}
 
 -- |Receiver calls this when it is done receiving a message in shared
 --  memory.  There must be exactly one call to sipcShmRecvDone() for
