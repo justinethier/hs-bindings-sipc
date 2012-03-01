@@ -84,7 +84,7 @@ sendEndXmit sipc dataP = do
 -- FUTURE: just replace this with memcpy?
 -- A quick-and-dirty bzero
 clearBuffer dataP = do
-    let buffer = take ipcLen $ repeat '\0'
+    let buffer = take (fromIntegral ipcLen) $ repeat '\0'
     tmpP <- newArray $ map castCharToCChar buffer
     _ <- copyBytes dataP tmpP $ length buffer
     free tmpP

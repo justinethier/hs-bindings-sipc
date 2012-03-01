@@ -46,38 +46,60 @@ enum SIPCIOCtl {
 -- |SIPC behaviors, for sipc_ioctl()
 {#enum SIPCIOCtl {} deriving (Eq, Show)#}
 
--- TODO: documentation for *everything* once all defs are in place
-
---data Sipc = Sipc 
---type SipcPtr = Ptr Sipc 
+-- |A pointer to the sipc struct type
 type SipcPtr = Ptr ()
 
--- TODO: should use CSize for last input arg
-{#fun unsafe sipc_open as ^ {`String', cFromEnum `SIPCRole', cFromEnum `SIPCType', `Int' } -> `SipcPtr' id #}
+{-
+/* sipc_open(char *key, int role, int ipc_type, size_t size)
+ *	key		Unique key to identify IPC communication channel,
+ *			must be the same for the sender and reciever.
+ *	role		SIPC_CREATOR if this application is the IPC creator,
+ *			SIPC_SENDER for the sender and SIPC_RECEIVER
+ *			for the reciever
+ *	ipc_type	Which IPC type used, must be the same for sender
+ *			and reciever.
+ *	size		Maximum message size to be transmitted.
+ *
+-}
+
+-- |This function must be called before any other function to initialize
+--  the sipc struct.  Caller must call sipcClose to free the memory.
+{#fun unsafe sipc_open as ^ {
+    `String',               -- ^ Unique key to identify the communication channel 
+    cFromEnum `SIPCRole', 
+    cFromEnum `SIPCType', 
+    fromIntegral `CSize' 
+  } -> `SipcPtr' id #}
+
+-- |Free the sipc struct and its contents
 {#fun unsafe sipc_close as ^ {id `SipcPtr'} -> `()' #}
 
+-- |Called by a helper application to destroy an IPC resource.
 {#fun unsafe sipc_unlink as ^ {`String', cFromEnum `SIPCType'} -> `()' #}
 
+-- |Modify the behavior of an open SIPC channel.  Returns 0 on success,
+--  <0 on failure.
 {#fun unsafe sipc_ioctl as ^ {id `SipcPtr', cFromEnum `SIPCIOCtl'} -> `Int' #}
 
--- TODO: same issue with CSize as above
---int sipc_send_data(sipc_t *sipc, size_t msg_len);
-{#fun unsafe sipc_send_data as ^ {id `SipcPtr', `Int'} -> `Int' #}
+-- |Blocking call to send msglen bytes of data.
+--  This can only be called if sender was specified when sipc_init was called.
+--  returns 0 on success, <0 on failure
+{#fun unsafe sipc_send_data as ^ {id `SipcPtr', fromIntegral `CSize'} -> `Int' #}
 
--- /* Returns a pointer to the data contained within the IPC resource */
---char *sipc_get_data_ptr(sipc_t *sipc);
+-- |Returns a pointer to the data contained within the IPC resource
 {#fun unsafe sipc_get_data_ptr as ^ {id `SipcPtr'} -> `Ptr CChar' id #}
 
+-- TODO: a CUInt below means that this only compiles on 32-bit systems, 
+--       since CSize maps to CULong on 64-bit systems.
 
--- TODO:
--- data is allocated by C, believe this must be indicated to Haskell
--- TBD: what about len??
---
--- /* Call to receive data.  Data will be allocated and filled and len
--- * will be set to the length.  Returns 0 on success, <0 on failure. */
---int sipc_recv_data(sipc_t *sipc, char **data, size_t *len);
+-- |Call to receive data.  Data will be allocated and filled and len
+--  will be set to the length.  Returns 0 on success, <0 on failure.
 {#fun unsafe sipc_recv_data as ^ {id `SipcPtr', alloca- `Ptr CChar' peek*, alloca- `CUInt' peek*} -> `Int' #}
 
+-- |Receiver calls this when it is done receiving a message in shared
+--  memory.  There must be exactly one call to sipc_shm_recv_done() for
+--  every call to sipc_recv_data(), if the sipc was created as shared
+--  memory.
 {#fun unsafe sipc_shm_recv_done as ^ {id `SipcPtr'} -> `Int' #}
 
 -- |Convert a Haskell enumeration to C.
