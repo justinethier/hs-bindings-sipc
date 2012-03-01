@@ -1,3 +1,16 @@
+{- |
+Module      : Bindings.SELinux.SIPC
+Copyright   : Justin Ethier
+License     : LGPL
+
+Maintainer  : github.com/justinethier
+Stability   : experimental
+Portability : portable
+
+This module provides Haskell bindings for the SIPC library for SELinux.
+
+-}
+
 {-# LANGUAGE ForeignFunctionInterface#-}
 
 module Bindings.SELinux.SIPC where
