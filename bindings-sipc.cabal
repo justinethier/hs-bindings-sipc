@@ -1,15 +1,15 @@
 Name:                bindings-sipc 
 Version:             1.0 
 Synopsis:            Low level bindings to SIPC. 
-Description:         Low level bindings to the Secure Inter-Process Communications (SIPC)
-                     library for SELinux.
+Description:         Low level bindings for the SELinux Secure Inter-Process
+                     Communications (SIPC) Library.
 License:             LGPL
 License-file:        LICENSE
 Author:              Justin Ethier
 Maintainer:          Justin Ethier <github.com/justinethier>
 Homepage:            http://justinethier.github.com/hs-bindings-sipc
 Cabal-Version:       >= 1.8
---Build-Tools:         c2hs
+-- Build-Tools:         c2hs
 Build-Type:          Simple
 Category:            Security 
 Tested-with:         GHC == 7.0.4
