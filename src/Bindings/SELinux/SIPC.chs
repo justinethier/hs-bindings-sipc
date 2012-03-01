@@ -95,7 +95,7 @@ type SipcPtr = Ptr ()
 {#fun unsafe sipc_ioctl as ^ {id `SipcPtr', cFromEnum `SipcIOCtl'} -> `Int' #}
 
 -- |Blocking call to send msglen bytes of data.
---  This can only be called if sender was specified when sipc_init was called.
+--  This can only be called if sender was specified when sipcOpen was called.
 --  returns 0 on success, <0 on failure
 {#fun unsafe sipc_send_data as ^ {id `SipcPtr', fromIntegral `CSize'} -> `Int' #}
 
@@ -110,8 +110,8 @@ type SipcPtr = Ptr ()
 {#fun unsafe sipc_recv_data as ^ {id `SipcPtr', alloca- `Ptr CChar' peek*, alloca- `CUInt' peek*} -> `Int' #}
 
 -- |Receiver calls this when it is done receiving a message in shared
---  memory.  There must be exactly one call to sipc_shm_recv_done() for
---  every call to sipc_recv_data(), if the sipc was created as shared
+--  memory.  There must be exactly one call to sipcShmRecvDone() for
+--  every call to sipcRecvData(), if the sipc was created as shared
 --  memory.
 {#fun unsafe sipc_shm_recv_done as ^ {id `SipcPtr'} -> `Int' #}
 
