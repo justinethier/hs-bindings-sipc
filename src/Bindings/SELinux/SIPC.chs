@@ -7,7 +7,7 @@ Maintainer  : github.com/justinethier
 Stability   : experimental
 Portability : portable
 
-This module provides Haskell bindings for the SIPC library for SELinux.
+This module provides Haskell bindings for the SELinux SIPC library.
 
 -}
 
