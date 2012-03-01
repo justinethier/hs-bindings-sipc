@@ -13,7 +13,20 @@ This module provides Haskell bindings for the SIPC library for SELinux.
 
 {-# LANGUAGE ForeignFunctionInterface#-}
 
-module Bindings.SELinux.SIPC where
+module Bindings.SELinux.SIPC
+    ( SipcRole(..)
+    , SipcType(..)
+    , SipcIOCtl(..)
+    , SipcPtr
+    , sipcOpen
+    , sipcClose
+    , sipcUnlink
+    , sipcIoctl
+    , sipcSendData 
+    , sipcGetDataPtr
+    , sipcRecvData
+    , sipcShmRecvDone
+    ) where
 
 import Foreign
 import Foreign.C
@@ -23,28 +36,28 @@ import Foreign.C
 #include <sipc/sipc.h>
 
 #c
-enum SIPCRole {
+enum SipcRole {
  SipcCreator  = SIPC_CREATOR,
  SipcSender   = SIPC_SENDER,
  SipcReceiver = SIPC_RECEIVER
 };
-enum SIPCType {
+enum SipcType {
  SipcSysvShm     = SIPC_SYSV_SHM,
  SipcSysvMqueues = SIPC_SYSV_MQUEUES,
  SipcNumTypes    = SIPC_NUM_TYPES
 };
-enum SIPCIOCtl {
+enum SipcIOCtl {
  SipcBlock   = SIPC_BLOCK,
  SipcNoblock = SIPC_NOBLOCK
 };
 #endc
 
 -- |SIPC Roles
-{#enum SIPCRole {} deriving (Eq, Show)#}
+{#enum SipcRole {} deriving (Eq, Show)#}
 -- |SIPC Types
-{#enum SIPCType {} deriving (Eq, Show)#}
+{#enum SipcType {} deriving (Eq, Show)#}
 -- |SIPC behaviors, for sipc_ioctl()
-{#enum SIPCIOCtl {} deriving (Eq, Show)#}
+{#enum SipcIOCtl {} deriving (Eq, Show)#}
 
 -- |A pointer to the sipc struct type
 type SipcPtr = Ptr ()
@@ -66,8 +79,8 @@ type SipcPtr = Ptr ()
 --  the sipc struct.  Caller must call sipcClose to free the memory.
 {#fun unsafe sipc_open as ^ {
     `String',               -- ^ Unique key to identify the communication channel 
-    cFromEnum `SIPCRole', 
-    cFromEnum `SIPCType', 
+    cFromEnum `SipcRole', 
+    cFromEnum `SipcType', 
     fromIntegral `CSize' 
   } -> `SipcPtr' id #}
 
@@ -75,11 +88,11 @@ type SipcPtr = Ptr ()
 {#fun unsafe sipc_close as ^ {id `SipcPtr'} -> `()' #}
 
 -- |Called by a helper application to destroy an IPC resource.
-{#fun unsafe sipc_unlink as ^ {`String', cFromEnum `SIPCType'} -> `()' #}
+{#fun unsafe sipc_unlink as ^ {`String', cFromEnum `SipcType'} -> `()' #}
 
 -- |Modify the behavior of an open SIPC channel.  Returns 0 on success,
 --  <0 on failure.
-{#fun unsafe sipc_ioctl as ^ {id `SipcPtr', cFromEnum `SIPCIOCtl'} -> `Int' #}
+{#fun unsafe sipc_ioctl as ^ {id `SipcPtr', cFromEnum `SipcIOCtl'} -> `Int' #}
 
 -- |Blocking call to send msglen bytes of data.
 --  This can only be called if sender was specified when sipc_init was called.
